@@ -3,7 +3,7 @@ import { zeroAddress } from 'ethereumjs-util';
 import { useHistory } from 'react-router-dom';
 import { TransactionMeta } from '@metamask/transaction-controller';
 import { createProjectLogger, Hex } from '@metamask/utils';
-import { QuoteMetadata, QuoteResponse } from '../types';
+import { QuoteMetadata, QuoteResponse } from '../../../../shared/types/bridge';
 import { DEFAULT_ROUTE } from '../../../helpers/constants/routes';
 import { setDefaultHomeActiveTabName } from '../../../store/actions';
 import { startPollingForBridgeTxStatus } from '../../../ducks/bridge-status/actions';
