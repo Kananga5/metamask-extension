@@ -44,8 +44,8 @@ const CrossChainSwap = () => {
   const t = useContext(I18nContext);
 
   // Load swaps feature flags so that we can use smart transactions
-  useSwapsFeatureFlags();
-  useBridging();
+  // useSwapsFeatureFlags();
+  // useBridging();
 
   const history = useHistory();
   const dispatch = useDispatch();
@@ -65,24 +65,24 @@ const CrossChainSwap = () => {
     await dispatch(resetBridgeState());
   };
 
-  useEffect(() => {
-    // Reset controller and inputs before unloading the page
-    resetControllerAndInputStates();
+  // useEffect(() => {
+  //   // Reset controller and inputs before unloading the page
+  //   resetControllerAndInputStates();
 
-    window.addEventListener('beforeunload', resetControllerAndInputStates);
+  //   window.addEventListener('beforeunload', resetControllerAndInputStates);
 
-    return () => {
-      window.removeEventListener('beforeunload', resetControllerAndInputStates);
-      resetControllerAndInputStates();
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener('beforeunload', resetControllerAndInputStates);
+  //     resetControllerAndInputStates();
+  //   };
+  // }, []);
 
-  // Needed for refreshing gas estimates
-  useGasFeeEstimates(selectedNetworkClientId);
-  // Needed for fetching exchange rates for tokens that have not been imported
-  useBridgeExchangeRates();
-  // Emits events related to quote-fetching
-  useQuoteFetchEvents();
+  // // Needed for refreshing gas estimates
+  // useGasFeeEstimates(selectedNetworkClientId);
+  // // Needed for fetching exchange rates for tokens that have not been imported
+  // useBridgeExchangeRates();
+  // // Emits events related to quote-fetching
+  // useQuoteFetchEvents();
 
   const redirectToDefaultRoute = async () => {
     history.push({

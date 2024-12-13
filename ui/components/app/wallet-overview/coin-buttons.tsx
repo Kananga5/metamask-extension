@@ -463,11 +463,11 @@ const CoinButtons = ({
     });
   }, [chainId, defaultSwapsToken]);
 
-  const handleBridgeOnClick = useCallback(async () => {
+  const handleBridgeOnClick = useCallback(() => {
     if (!defaultSwapsToken) {
       return;
     }
-    await setCorrectChain();
+    setCorrectChain();
     openBridgeExperience(
       'Home',
       defaultSwapsToken,

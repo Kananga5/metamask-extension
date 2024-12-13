@@ -133,7 +133,7 @@ export const useMultichainBalances = () => {
     return tokensWithBalance.sort(
       (a, b) => (b.tokenFiatAmount ?? 0) - (a.tokenFiatAmount ?? 0),
     );
-  }, [JSON.stringify(selectedAccountTokensChains)]);
+  }, [selectedAccountTokensChains]);
 
   const balanceByChainId = useMemo(() => {
     return assetsWithBalance.reduce(

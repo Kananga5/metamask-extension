@@ -81,7 +81,6 @@ import { Column, Row, Tooltip } from '../layout';
 import useRamps from '../../../hooks/ramps/useRamps/useRamps';
 import { getNativeCurrency } from '../../../ducks/metamask/metamask';
 import useLatestBalance from '../../../hooks/bridge/useLatestBalance';
-import { useCountdownTimer } from '../../../hooks/bridge/useCountdownTimer';
 import { useBridgeTokens } from '../../../hooks/bridge/useBridgeTokens';
 import { getCurrentKeyring, getLocale } from '../../../selectors';
 import { isHardwareKeyring } from '../../../helpers/utils/hardware';
@@ -120,7 +119,7 @@ const PrepareBridgePage = () => {
   const slippage = useSelector(getSlippage);
 
   const quoteRequest = useSelector(getQuoteRequest);
-  const { isLoading, activeQuote, isQuoteGoingToRefresh } =
+  const { isLoading, activeQuote, isQuoteGoingToRefresh, quotesLastFetchedMs } =
     useSelector(getBridgeQuotes);
 
   const { refreshRate } = useSelector(getBridgeQuotesConfig);
@@ -136,7 +135,7 @@ const PrepareBridgePage = () => {
     isInsufficientGasForQuote,
     isInsufficientBalance,
   } = useSelector(getValidationErrors);
-  const { openBuyCryptoInPdapp } = useRamps();
+  // const { openBuyCryptoInPdapp } = useRamps();
 
   const { balanceAmount: nativeAssetBalance } = useLatestBalance(
     SWAPS_CHAINID_DEFAULT_TOKEN_MAP[
@@ -167,7 +166,7 @@ const PrepareBridgePage = () => {
   const { flippedRequestProperties } = useRequestProperties();
   const trackCrossChainSwapsEvent = useCrossChainSwapsEventTracker();
 
-  const millisecondsUntilNextRefresh = useCountdownTimer();
+  // const millisecondsUntilNextRefresh = useCountdownTimer();
 
   const [rotateSwitchTokens, setRotateSwitchTokens] = useState(false);
 
@@ -516,13 +515,15 @@ const PrepareBridgePage = () => {
               overflow: 'hidden',
             }}
           >
-            {activeQuote && isQuoteGoingToRefresh && (
+            {activeQuote && isQuoteGoingToRefresh && quotesLastFetchedMs && (
               <Row
                 style={{
                   position: 'absolute',
                   left: 0,
                   top: 0,
-                  width: `calc(100% * (${refreshRate} - ${millisecondsUntilNextRefresh}) / ${refreshRate})`,
+                  width: `calc(100% * (${refreshRate} - ${
+                    refreshRate - (Date.now() - quotesLastFetchedMs) + 1000
+                  }) / ${refreshRate})`,
                   height: 4,
                   maxWidth: '100%',
                   transition: 'width 1s linear',
@@ -596,8 +597,8 @@ const PrepareBridgePage = () => {
                 ticker,
               ])}
               textAlign={TextAlign.Left}
-              actionButtonLabel={t('buyMoreAsset', [ticker])}
-              actionButtonOnClick={() => openBuyCryptoInPdapp()}
+              // actionButtonLabel={t('buyMoreAsset', [ticker])}
+              // actionButtonOnClick={() => {}}
             />
           )}
       </Column>
