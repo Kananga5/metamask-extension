@@ -1678,12 +1678,17 @@ export default class MetamaskController extends EventEmitter {
           'NotificationServicesController:selectIsNotificationServicesEnabled',
           'AccountsController:listAccounts',
           'AccountsController:updateAccountMetadata',
+          'NetworkController:getState',
+          'NetworkController:addNetwork',
+          'NetworkController:removeNetwork',
+          'NetworkController:updateNetwork',
         ],
         allowedEvents: [
           'KeyringController:lock',
           'KeyringController:unlock',
           'AccountsController:accountAdded',
           'AccountsController:accountRenamed',
+          'NetworkController:networkRemoved',
         ],
       }),
     });
@@ -3388,6 +3393,17 @@ export default class MetamaskController extends EventEmitter {
     );
     this.multichainBalancesController.start();
     this.multichainBalancesController.updateBalances();
+
+    this.controllerMessenger.subscribe(
+      'CurrencyRateController:stateChange',
+      ({ currentCurrency }) => {
+        if (
+          currentCurrency !== this.multichainRatesController.state.fiatCurrency
+        ) {
+          this.multichainRatesController.setFiatCurrency(currentCurrency);
+        }
+      },
+    );
   }
 
   /**
@@ -3923,6 +3939,8 @@ export default class MetamaskController extends EventEmitter {
         appStateController.setLastInteractedConfirmationInfo.bind(
           appStateController,
         ),
+      updateSlides: appStateController.updateSlides.bind(appStateController),
+      removeSlide: appStateController.removeSlide.bind(appStateController),
 
       // EnsController
       tryReverseResolveAddress:
