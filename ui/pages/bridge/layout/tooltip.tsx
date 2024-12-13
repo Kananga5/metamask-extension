@@ -90,7 +90,7 @@ const Tooltip = React.forwardRef(
             preventOverflow
             flip
             hasArrow
-            isPortal
+            // isPortal
             {...props}
           >
             <Column gap={4}>
